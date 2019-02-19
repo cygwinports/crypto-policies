@@ -1,0 +1,36 @@
+GIT_URI="https://gitlab.com/redhat-crypto/fedora-crypto-policies.git"
+inherit git
+
+NAME="crypto-policies"
+VERSION=20190218
+RELEASE=1
+CATEGORY="Base"
+SUMMARY="System-wide crypto policy configuration"
+DESCRIPTION="This package provides a tool update-crypto-policies, which sets
+the policy applicable for the various cryptographic back-ends, such as SSL/TLS
+libraries. The policy set by the tool will be the default policy used by these
+back-ends unless the application user configures them otherwise."
+HOMEPAGE="https://docs.fedoraproject.org/en-US/packaging-guidelines/CryptoPolicies/"
+
+PATCH_URI="20190218-cygwin-asciidoc.patch"
+
+ARCH=noarch
+
+src_compile() {
+	lndirs
+	cd ${B}
+	cygmake
+}
+
+src_install() {
+	cd ${B}
+	cyginstall
+
+	insinto /etc/crypto-policies
+	newins default-config config
+	make_etc_defaults /etc/crypto-policies/config
+
+	echo /usr/bin/update-crypto-policies >> ${D}/etc/postinstall/${NAME}.sh
+
+	rm -f ${D}/usr/bin/fips-* ${D}/usr/share/man/man8/fips-*
+}

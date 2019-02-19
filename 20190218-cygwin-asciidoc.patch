@@ -1,0 +1,11 @@
+--- origsrc/fedora-crypto-policies/Makefile	2019-02-18 21:39:07.000000000 -0600
++++ src/fedora-crypto-policies/Makefile	2019-02-18 21:42:22.719906300 -0600
+@@ -40,7 +40,7 @@ clean:
+ 
+ %: %.txt
+ 	asciidoc.py -v -d manpage -b docbook $<
+-	xsltproc --nonet -o $@ /usr/share/asciidoc/docbook-xsl/manpage.xsl $@.xml
++	xsltproc --nonet -o $@ /etc/asciidoc/docbook-xsl/manpage.xsl $@.xml
+ 
+ dist:
+ 	rm -rf crypto-policies && git clone . crypto-policies && rm -rf crypto-policies/.git/ && tar -czf crypto-policies-git$(VERSION).tar.gz crypto-policies && rm -rf crypto-policies
